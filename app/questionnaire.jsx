@@ -109,7 +109,7 @@ const Questionnaire = () => {
 
             </Form>
 
-            <Modal title="计算结果" open={showResult} onCancel={() => setShowResult(false)}
+            <Modal title="计算结果" centered open={showResult} onCancel={() => setShowResult(false)}
                 footer={[
                     <Button key="back" onClick={() => setShowResult(false)}>知道了</Button>,
                 ]}
