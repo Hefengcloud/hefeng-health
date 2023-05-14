@@ -83,24 +83,26 @@ const Questionnaire = () => {
                             </Radio.Group>
                         </Form.Item>
                         {secondBloodRelative &&
-                            <Form.Item label="2.1.1 共有几人" name="peopleNumber"
-                                rules={[{ required: true, message: '请选择' }]}
-                            >
-                                <Radio.Group>
-                                    <Radio value="1">1个</Radio>
-                                    <Radio value="2">大于等于2个</Radio>
-                                </Radio.Group>
-                            </Form.Item>
+                            <>
+                                <Form.Item label="2.1.1 共有几人" name="peopleNumber"
+                                    rules={[{ required: true, message: '请选择' }]}
+                                >
+                                    <Radio.Group>
+                                        <Radio value="1">1个</Radio>
+                                        <Radio value="2">大于等于2个</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                                <Form.Item label="2.1.2 您是否有一级血缘亲属（母亲、亲姐妹）在50岁及以前曾患乳腺癌？"
+                                    name="firstBloodRelative"
+                                    rules={[{ required: true, message: '请选择' }]}
+                                >
+                                    <Radio.Group>
+                                        <Radio value="false">否</Radio>
+                                        <Radio value="true">是</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </>
                         }
-                        <Form.Item label="2.2 您是否有一级血缘亲属（母亲、亲姐妹）在50岁及以前曾患乳腺癌？"
-                            name="firstBloodRelative"
-                            rules={[{ required: true, message: '请选择' }]}
-                        >
-                            <Radio.Group>
-                                <Radio value="false">否</Radio>
-                                <Radio value="true">是</Radio>
-                            </Radio.Group>
-                        </Form.Item>
                     </>
                 }
                 <Form.Item>
