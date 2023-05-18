@@ -1,9 +1,10 @@
 'use client'
 
-import { Alert, Breadcrumb, Button, Divider, Form, InputNumber, Layout, Modal, Radio, theme } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import { Alert, Breadcrumb, Button, Divider, Form, InputNumber, Layout, Modal, Radio, Space, theme } from 'antd';
 const { Header, Content, Footer } = Layout;
+import { Rule } from 'antd/lib/form';
 import { useState } from 'react';
-import { resolveModuleName } from 'typescript';
 
 const educationLevelValues = [0, 0.29, 0.69878]
 const menopauseValue = 0.29448
@@ -39,6 +40,7 @@ export default function Page() {
 
     const [form] = Form.useForm()
     const [isMenopaused, setIsMenopaused] = useState(false)
+    const [age, setAge] = useState<string | number | null>(null)
     const [showResult, setShowResult] = useState(false)
     const [result, setResult] = useState<RiskResult>()
 
@@ -137,7 +139,9 @@ export default function Page() {
                         <Form.Item label="1 年龄(age)" name="age"
                             rules={[{ required: true, message: '请输入年龄' }]}
                         >
-                            <InputNumber placeholder="请输入年龄" min={18} max={100} />
+                            <InputNumber placeholder="请输入年龄" min={18} max={100}
+                                onChange={setAge}
+                            />
                         </Form.Item>
                         <Form.Item label="2 最高教育程度(education level)？"
                             name="educationLevel"
@@ -163,9 +167,23 @@ export default function Page() {
                         {
                             isMenopaused && <Form.Item label="3.1 绝经年龄(age at menopause)"
                                 name="menopauseAge"
-                                rules={[{ required: true, message: '请输入年龄' }]}
+                                dependencies={['age']}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入年龄',
+                                    },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || getFieldValue('age') >= value) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error(`绝经年龄不得大于当前年龄(${age})`));
+                                        },
+                                    }),
+                                ]}
                             >
-                                <InputNumber placeholder="请输入年龄" min={18} max={100} />
+                                <InputNumber placeholder="请输入年龄" min={18} />
                             </Form.Item>
                         }
 
@@ -188,8 +206,10 @@ export default function Page() {
                             </Radio.Group>
                         </Form.Item>
                         <Form.Item>
-                            <Button type="primary" htmlType="submit">计算</Button>
-                            <Button style={{ marginLeft: '10px' }} htmlType="reset">重置</Button>
+                            <Space>
+                                <Button type="primary" htmlType="submit">计算</Button>
+                                <Button htmlType="reset">重置</Button>
+                            </Space>
                         </Form.Item>
                     </Form>
 
@@ -202,6 +222,7 @@ export default function Page() {
                             message={result?.message}
                             description={result?.description}
                             type={result?.type || 'info'}
+                            icon={<InfoCircleOutlined />}
                             showIcon />
                     </Modal>
                 </div>
