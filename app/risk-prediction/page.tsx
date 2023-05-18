@@ -11,7 +11,7 @@ const menopauseValue = 0.29448
 interface RiskResult {
     message: string,
     description: string,
-    type: string
+    type: "success" | "warning" | "error" | "info"
 }
 
 const riskLevelMessages: RiskResult[] = [
